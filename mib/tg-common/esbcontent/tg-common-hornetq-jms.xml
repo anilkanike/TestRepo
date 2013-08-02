@@ -1,0 +1,82 @@
+<configuration xmlns="urn:hornetq"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+   <topic name="TG.OUTBOUND">
+   	  <entry name="/topic/TG.OUTBOUND"/>
+   </topic>   
+	<!-- HR Inbound QUEUE -->
+	<queue name="TG.ELLIPSE-HR.IN"> 
+		<entry name="queue/TG.ELLIPSE-HR.IN"/>
+	</queue>	
+	<!-- HR Outbound QUEUE -->
+	<queue name="TG.ELLIPSE-HR.OUT"> 
+		<entry name="queue/TG.ELLIPSE-HR.OUT"/>
+	</queue> 
+	<!-- AWM Inbound QUEUE -->
+	<queue name="TG.ELLIPSE-AWM.IN"> 
+		<entry name="queue/TG.ELLIPSE-AWM.IN"/>
+	</queue>	
+	<!-- AWM Outbound QUEUE -->
+	<queue name="TG.ELLIPSE-AWM.OUT"> 
+		<entry name="queue/TG.ELLIPSE-AWM.OUT"/>
+	</queue> 
+	<!-- SUCESS Inbound QUEUE -->
+	<queue name="TG.ELLIPSE-SUCCESS.IN"> 
+		<entry name="queue/TG.ELLIPSE-SUCCESS.IN"/>
+	</queue>	
+	<!-- SUCESS Outbound QUEUE -->
+	<queue name="TG.ELLIPSE-SUCCESS.OUT"> 
+		<entry name="queue/TG.ELLIPSE-SUCCESS.OUT"/>
+	</queue> 
+	<!-- ARTEMIS Inbound QUEUE -->
+	<queue name="TG.ELLIPSE-ARTEMIS.IN"> 
+		<entry name="queue/TG.ELLIPSE-ARTEMIS.IN"/>
+	</queue>	
+	<!-- ARTEMIS Outbound QUEUE -->
+	<queue name="TG.ELLIPSE-ARTEMIS.OUT"> 
+		<entry name="queue/TG.ELLIPSE-ARTEMIS.OUT"/>
+	</queue>
+	
+	<!-- AWM dedicated Queue's to execute parallel messages at a time -->
+	<queue name="TG.Publish-TableCode.GW"> 
+		<entry name="queue/TG.Publish-TableCode.GW"/>
+	</queue>   
+	<queue name="TG.Publish-StandardJob.GW"> 
+		<entry name="queue/TG.Publish-StandardJob.GW"/>
+	</queue> 
+	<queue name="TG.Publish-Equipment.GW"> 
+		<entry name="queue/TG.Publish-Equipment.GW"/>
+	</queue>   
+	<queue name="TG.Publish-WorkOrder.GW"> 
+		<entry name="queue/TG.Publish-WorkOrder.GW"/>
+	</queue> 
+	<queue name="TG.Publish-PlannedMaintenance.GW"> 
+		<entry name="queue/TG.Publish-PlannedMaintenance.GW"/>
+	</queue> 
+	<queue name="TG.Publish-WorkOrderTask.GW"> 
+		<entry name="queue/TG.Publish-WorkOrderTask.GW"/>
+	</queue>
+	
+	<!-- HR dedicated Queue's to execute parallel messages at a time -->
+	<queue name="TG.Publish-NonEmployee.GW"> 
+		<entry name="queue/TG.Publish-NonEmployee.GW"/>
+	</queue>   
+	<queue name="TG.Publish-Employee.GW"> 
+		<entry name="queue/TG.Publish-Employee.GW"/>
+	</queue> 
+	<queue name="TG.Publish-EmployeePosition.GW"> 
+		<entry name="queue/TG.Publish-EmployeePosition.GW"/>
+	</queue>   
+	<queue name="TG.Publish-TrainingCourse.GW"> 
+		<entry name="queue/TG.Publish-TrainingCourse.GW"/>
+	</queue> 
+	<queue name="TG.Publish-TrainingResults.GW"> 
+		<entry name="queue/TG.Publish-TrainingResults.GW"/>
+	</queue> 
+	<queue name="TG.Publish-EmpResource.GW"> 
+		<entry name="queue/TG.Publish-EmpResource.GW"/>
+	</queue>
+	<queue name="TG.Publish-PersonnelLeave.GW"> 
+		<entry name="queue/TG.Publish-PersonnelLeave.GW"/>
+	</queue>
+	
+</configuration>

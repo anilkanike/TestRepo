@@ -1,0 +1,33 @@
+<GetCodeEntry xmlns:oa="http://www.openapplications.org/oagis/9"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<oa:ApplicationArea>
+		<oa:Sender>
+			<oa:LogicalID>EllipseSystem</oa:LogicalID>
+			<oa:TaskID>ShowCodeTable</oa:TaskID>
+			<oa:ReferenceID>PublishCodeEntry</oa:ReferenceID>
+		</oa:Sender>
+		<oa:CreationDateTime>2013-04-07T19:51:57</oa:CreationDateTime>
+		<oa:BODID>Tablecode-AWM-Test</oa:BODID>
+		<oa:UserArea xmlns="http://www.ventyx.com/IP/1"
+			xsi:schemaLocation="http://www.ventyx.com/IP/1 ${IPPath}/1_0_0/ApplicationAreaExtensions.xsd">
+			<ServiceContext>
+				<ServiceName>GetCodeEntry</ServiceName>
+				<ServiceVersion>1.0</ServiceVersion>
+				<MessageType>CodeEntry</MessageType>
+			</ServiceContext>
+			<AuthorizationContext>
+				<OrgID>GRID</OrgID>
+				<Proxy>
+					<UserID>S10198</UserID>
+					<Role>E8 OUTBOUN</Role>
+				</Proxy>
+			</AuthorizationContext>
+		</oa:UserArea>
+	</oa:ApplicationArea>
+	<oa:DataArea>
+		<CodeEntry>
+			<Type>$UG</Type>
+			<CodeID>AA</CodeID>
+		</CodeEntry>
+	</oa:DataArea>
+</GetCodeEntry>

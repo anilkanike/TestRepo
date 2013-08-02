@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smooks-resource-list xmlns="http://www.milyn.org/xsd/smooks-1.1.xsd"
+	xmlns:jb="http://www.milyn.org/xsd/smooks/javabean-1.4.xsd">
+	<params>
+		<param name="stream.filter.type">DOM</param>
+		<param name="inputType">input.xml</param>
+	</params>
+
+	<jb:bean beanId="resource" retain="true"
+		class="com.transgrid.mib.ellipse.hr.domain.EllipseResource"
+		createOnElement="DataArea/Personnel">
+		<jb:value data="ID" property="id" />
+		<jb:value data="UserArea/EmployeeType" property="empNonEmpIndicator" />
+		<jb:value data="Skill/UserArea/AuthorisedBy" property="authorisedBy" />
+		<jb:value data="Skill/UserArea/SkillType" property="resourceClass" />
+		<jb:value data="Skill/Code" property="resourceCode" />
+		<jb:value data="Skill/Name" property="resourceTypeDesc" />
+		<jb:value data="Skill/EffectiveTimePeriod/StartDateTime"
+			property="effectiveDate" decoder="com.mincom.mib.smooks.decoders.DateTimeDecoder">
+			<jb:decodeParam name="toFormat">yyyyMMdd</jb:decodeParam>
+			<jb:decodeParam name="toType">string</jb:decodeParam>
+		</jb:value>
+		<jb:value data="Skill/CompetencyCode" property="competencyLevel" />
+		<jb:value data="Skill/EffectiveTimePeriod/EndDateTime"
+			property="expiryDate" decoder="com.mincom.mib.smooks.decoders.DateTimeDecoder">
+			<jb:decodeParam name="toFormat">yyyyMMdd</jb:decodeParam>
+			<jb:decodeParam name="toType">string</jb:decodeParam>
+		</jb:value>
+	</jb:bean>
+
+</smooks-resource-list>

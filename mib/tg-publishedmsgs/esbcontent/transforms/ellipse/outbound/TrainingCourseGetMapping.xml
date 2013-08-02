@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smooks-resource-list xmlns="http://www.milyn.org/xsd/smooks-1.1.xsd"
+	xmlns:jb="http://www.milyn.org/xsd/smooks/javabean-1.4.xsd">
+	<params>
+		<param name="stream.filter.type">DOM</param>
+		<param name="inputType">input.xml</param>
+	</params>
+
+	<jb:bean beanId="trainingCourse" retain="true"
+		class="com.mincom.enterpriseservice.ellipse.trainingcourse.TrainingCourseServiceReadRequestDTO"
+		createOnElement="DataArea/TrainingCourse">
+		<jb:value data="CourseID" property="courseId" />
+		<jb:value data="MajorRevisionNumber" property="courseMajorRev" />
+	</jb:bean>
+ 
+</smooks-resource-list>
+

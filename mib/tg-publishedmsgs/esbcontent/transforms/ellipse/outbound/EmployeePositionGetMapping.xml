@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smooks-resource-list xmlns="http://www.milyn.org/xsd/smooks-1.1.xsd"
+	xmlns:jb="http://www.milyn.org/xsd/smooks/javabean-1.4.xsd">
+	<params>
+		<param name="stream.filter.type">DOM</param>
+		<param name="inputType">input.xml</param>
+	</params>
+
+	<jb:bean beanId="employeePosition" retain="true"
+		class="com.transgrid.mib.ellipse.hr.domain.EllipseEmployee"
+		createOnElement="DataArea/Personnel">
+		<jb:value data="ID" property="positionId" />
+	</jb:bean> 
+
+</smooks-resource-list>
+

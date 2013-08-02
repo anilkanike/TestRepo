@@ -1,0 +1,40 @@
+<GetProjectSchedule xmlns:oa="http://www.openapplications.org/oagis">
+    <oa:ApplicationArea>
+        <BODID>Test-20130409-1240</BODID>
+        <oa:Sender>
+            <LogicalID>TestFromConsole</LogicalID>
+            <TaskID>AnilTestGetProjectSchedule</TaskID>
+            <ReferenceID>AnilTestRequestID</ReferenceID>
+        </oa:Sender>
+        <oa:UserArea>
+            <ServiceContext>
+                <ServiceName>GetProjectSchedule-Anil</ServiceName>
+                <ServiceVersion>1.0</ServiceVersion>
+                <MessageType>ProjectSchedule</MessageType>
+                <CorrelationID>CID-20130409-1240</CorrelationID>
+                <TransactionID>TID-20130409-1240</TransactionID>
+                <DocumentName>Test</DocumentName>
+            </ServiceContext>
+            <AuthorizationContext>
+                <OrgID>GRID</OrgID>
+                <Role>E8.3 MIP</Role>
+                <Proxy>
+                    <UserID>C16748</UserID>
+                    <OrgID>GRID</OrgID>
+                    <Role>DUMMY12</Role>
+                </Proxy>
+            </AuthorizationContext>
+        </oa:UserArea>
+    </oa:ApplicationArea>
+    <oa:DataArea>
+        <oa:Get>
+            <oa:Expression expressionLanguage="xpath"></oa:Expression>
+        </oa:Get>
+        <ProjectSchedule>
+            <DocumentID>
+                <ID>1001</ID>
+            </DocumentID>
+            <ReturnType>C</ReturnType>
+        </ProjectSchedule>
+    </oa:DataArea>
+</GetProjectSchedule>
