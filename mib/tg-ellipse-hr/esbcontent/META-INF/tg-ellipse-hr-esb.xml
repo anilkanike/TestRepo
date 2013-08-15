@@ -1,0 +1,548 @@
+<?xml version="1.0"?>
+<jbossesb parameterReloadSecs="5"
+	xmlns="http://anonsvn.labs.jboss.com/labs/jbossesb/trunk/product/etc/schemas/xml/jbossesb-1.3.0.xsd"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://anonsvn.labs.jboss.com/labs/jbossesb/trunk/product/etc/schemas/xml/jbossesb-1.3.0.xsd http://anonsvn.jboss.org/repos/labs/labs/jbossesb/trunk/product/etc/schemas/xml/jbossesb-1.3.0.xsd">
+	<providers> 
+		<fs-provider name="FileProvider">           
+			<fs-bus busid="TrainingResultsGW">
+				<fs-message-filter directory="/winshare/HR/Savv-e/ToEllipse/new/"  
+					error-delete="false" error-directory="/winshare/HR/Savv-e/ToEllipse/err/"
+					error-suffix=".err" input-suffix=".txt" post-delete="false"
+					post-directory="/winshare/HR/Savv-e/ToEllipse/done/" post-rename="true" post-suffix=".done"
+					work-suffix=".esbInProgress" />     
+			</fs-bus>                                                 
+		</fs-provider>                                     
+		<!-- This approach uses the JCA providers -->
+		<jms-jca-provider adapter="hornetq-ra.rar"
+			connection-factory="XAConnectionFactory" name="jms-jca-provider"
+			transacted="true">   
+			<!-- This gets around the issue of 4.9 not having the mapping and 4.10 
+				does -->           
+			<property name="jcaActivationMapper"  
+				value="org.jboss.soa.esb.listeners.jca.JBossActivationMapper" />
+  
+			<jms-bus busid="CustomHRInbound.GW">         
+				<jms-message-filter acknowledge-mode="AUTO_ACKNOWLEDGE"
+					dest-name="${mib.jms.queue.tg.hr.inbound:queue/TG.ELLIPSE-HR.IN}"
+					dest-type="QUEUE" selector="ReceiverID = 'TG-ELLIPSE'" transacted="true" />
+			</jms-bus>
+			<jms-bus busid="TG.ELLIPSE-HR.OUT">
+				<jms-message-filter acknowledge-mode="CLIENT_ACKNOWLEDGE"
+					dest-name="${mib.jms.queue.tg.hr.outbound:queue/TG.ELLIPSE-HR.OUT}"
+					dest-type="QUEUE" transacted="true" />
+			</jms-bus> 
+			<jms-bus busid="TG.ELLIPSE-SAVVE.IN">  
+                  <jms-message-filter acknowledge-mode="AUTO_ACKNOWLEDGE"
+                        dest-name="${mib.jms.queue.tg.hr.inbound:queue/TG.ELLIPSE-HR.IN}" dest-type="QUEUE"
+                        selector="ReceiverID = 'TG-ELLIPSE-TRAINING'" transacted="true" />
+            </jms-bus>
+
+			<!-- JCA reference to call MIB core services -->
+			<jms-bus busid="INBOUND.REPLY">
+				<jms-message-filter acknowledge-mode="CLIENT_ACKNOWLEDGE"
+					dest-name="${mib.jms.queue.name.reply:queue/MIB.COMMON.REPLY}"
+					dest-type="QUEUE" persistent="true" selector="ClientID = 'HR-INBOUND'"
+					transacted="true" />
+			</jms-bus>
+			<jms-bus busid="TG.ELLIPSE-HR.IN">
+				<jms-message-filter acknowledge-mode="CLIENT_ACKNOWLEDGE"
+					dest-name="queue/TG.ELLIPSE-HR.IN" dest-type="QUEUE" persistent="true"
+					selector="ReceiverID IS NULL OR ReceiverID NOT IN('TG-ELLIPSE','TG-ELLIPSE-TRAINING')" transacted="true" />
+			</jms-bus>
+			
+			<activation-config>
+				<property name="reconnectInterval" value="1000" />
+				<!-- We don't want to buffer the consumer side so we can better control 
+					consumption from the queues -->
+				<property name="ConsumerWindowSize" value="0" />
+			</activation-config>
+		</jms-jca-provider>
+	</providers>
+	
+	<services>
+		<!-- Listen on our IN queue and route to standard Reply queue -->
+		<service category="tg-ellipse-hr"
+			description="Service that is listening on the HR in queue" invmScope="GLOBAL"
+			invmTransacted="false" name="HRInboundDispatcher">
+			<property name="maxThreads" value="1" />
+  			<property name="inVMLockStep" value="true" />
+			<listeners>
+				<jms-listener busidref="CustomHRInbound.GW" is-gateway="true"
+					maxThreads="1" name="HRInboundListener">
+					<property name="composer-class" value="com.mincom.mib.esb.JMSMessageComposer" />
+				</jms-listener>
+			</listeners>
+			<actions mep="OneWay">
+				<action class="org.jboss.soa.esb.actions.Notifier" name="BroadcastResults">
+					<property name="okMethod" value="notifyOK" />
+					<property name="exceptionMethod" value="notifyError" />
+					<property name="destinations">
+						<NotificationList type="ok">
+							<target class="NotifyQueues">
+								<queue connection-factory="XAConnectionFactory" jndi-URL="${mib.jms.url}"
+									jndi-context-factory="${mib.jms.contextFactory}"
+									jndiName="${mib.jms.queue.tg.hr.outbound:queue/TG.ELLIPSE-HR.OUT}" />
+							</target>
+						</NotificationList>
+						<NotificationList type="err">
+							<target class="NotifyQueues">
+								<queue connection-factory="XAConnectionFactory" jndi-URL="${mib.jms.url}"
+									jndi-context-factory="${mib.jms.contextFactory}"
+									jndiName="${mib.jms.queue.tg.hr.outbound:queue/TG.ELLIPSE-HR.OUT}" />
+							</target>
+						</NotificationList>
+					</property>
+				</action>
+				<!-- Store our message in the ESB Archive -->
+				<action class="com.mincom.mib.esb.action.ESBMessageStoreAction"
+					name="StoreMessage">
+					<property name="statusOnOK" value="OK" />
+					<property name="statusOnError" value="FAILED" />
+					<property name="deployment" value="tg-ellipse-hr" />
+					<property name="replayTarget" value="tg-ellipse-hr:HRInboundDispatcher" />
+				</action>
+				<action class="com.mincom.mib.esb.action.ResponseHandler"
+					name="InitializeResponseMessage">
+					<property name="smooksConfig">
+						<exceptionMapping config="/transforms/common/OAGISResponseMapping.xml"
+							get-payload-location="ReplyMessage" resultType="STRING"
+							useResponseAsDefault="true" />
+						<replyMapping config="/transforms/common/OAGISDefaultResponseMapping.xml"
+							resultType="STRING" set-payload-location="ReplyMessage"
+							storeBeanResults="MessageHeader" />
+					</property>
+				</action>
+				<!-- Log the message to the log file -->
+				<action class="org.jboss.soa.esb.actions.LogAction" name="LogMessage">
+					<property name="logLevel" value="info" />
+					<property name="message"
+						value="Inbound message received from HR-Ellipse channel, routing..." />
+				</action>
+				<!-- Capture the common data from the header for use later -->
+				<action class="org.jboss.soa.esb.smooks.SmooksAction" name="MapUserAreaToHeader">
+					<property name="smooksConfig"
+						value="/transforms/common/OAGISUserAreaMapping.xml" />
+					<property name="set-payload-location" value="MessageHeader" />
+					<property name="resultType" value="JAVA" />
+				</action>
+				<!-- Setup the default operation context used by Ellipse -->
+				<action class="com.mincom.mib.ellipse.SetDefaultOperationContext"
+					name="SetOperationContext">
+					<property name="district" value="${ellipse.defaultDistrict}" />
+					<property name="position" value="${ellipse.defaultPosition}" />
+					<property name="numberOfInstances" value="50" />
+				</action>
+				<!-- Start a conversation with Ellipse -->
+				<action class="com.mincom.mib.ellipse.StartConversationAction"
+					name="StartConversation">
+					<property name="serviceUrl" value="${ellipse.serviceUrl}" />
+					<property name="serviceUrl.1" value="${ellipse.serviceUrl.1:null}" />
+					<property name="serviceUrl.2" value="${ellipse.serviceUrl.2:null}" />
+					<property name="user" value="${ellipse.user}" />
+					<property name="password" value="${ellipse.password}" />
+				</action>   
+				
+				<action class="org.jboss.soa.esb.smooks.SmooksAction" name="MapMessageToDTOs">
+					<property name="smooksConfig"
+						value="/transforms/ellipse/inbound/ResourceSyncMapping.xml" />
+					<property name="set-payload-location" value="RequestDTOs" />
+					<property name="resultType" value="JAVA" />
+				</action>
+
+				<action class="com.mincom.mib.ellipse.TransactionAction"
+					name="StartTransaction" process="start" />
+				<!-- Invoke Training action to call Ellipse service -->
+				<action class="com.transgrid.mib.ellipse.hr.action.ResourceAction"
+					name="ResourceData" process="sync">
+					<property name="get-payload-location" value="RequestDTOs" />
+				</action>
+
+				<action class="com.mincom.mib.ellipse.TransactionAction"
+					name="CompleteTransaction" process="commit" />
+
+				<action class="com.mincom.mib.esb.action.ResponseHandler"
+					name="SetResponseMessage">
+					<property name="smooksConfig">
+						<replyMapping config="/transforms/common/OAGISResponseMapping.xml"
+							get-payload-location="ReplyMessage" resultType="STRING"
+							useResponseAsDefault="true" />
+					</property>
+				</action>
+				<!-- End the Ellipse conversation -->
+				<action class="com.mincom.mib.ellipse.EndConversationAction"
+					name="EndConversation" />
+			</actions>
+		</service>
+		
+		<!-- SAVVE RELATED SERVICES -->	
+		<!-- Load Training Service for Update operation -->
+		<service category="tg-ellipse-hr" description="Load training result entries from spreadsheets or text file"
+			invmScope="GLOBAL" name="LoadTrainingResultsService">
+			<listeners>
+				<fs-listener busidref="TrainingResultsGW" is-gateway="true"
+					maxThreads="1" name="TrainingResultsFileListener" />
+			</listeners>
+			<actions mep="OneWay">
+				<action class="org.jboss.soa.esb.smooks.SmooksAction" name="TransformToSyncTrainingResultsMessage">
+					<property name="smooksConfig"
+						value="/transforms/ellipse/inbound/TrainingResultsMessageMapping.xml" />
+					<property name="resultType" value="STRING" />
+				</action>
+			</actions>
+		</service> 
+		
+		<!-- This service simply routes the message to the custom TG.ELLIPSE-HR.IN 
+			gateway queue -->
+		<service category="tg-ellipse-hr" description="Route message to TG.ELLIPSE-HR.IN"
+			invmScope="GLOBAL" name="routeToHR">
+			<actions mep="OneWay">
+				<action class="com.mincom.mib.esb.action.SetPropertyAction"
+					name="SetProperties">
+					<property name="properties">
+						<set name="ReceiverID">'TG-ELLIPSE-TRAINING'</set>
+					</property>  
+				</action> 
+				<!-- <action class="org.jboss.soa.esb.actions.SystemPrintln" name="Echo"> 
+					<property name="message" value="Result" /> 
+					<property name="printfull" value="true"/> 
+				</action> -->
+				<action class="org.jboss.soa.esb.actions.routing.JMSRouter"
+					name="RouteToHrInQueue">
+					<property name="jndiName" value="queue/TG.ELLIPSE-HR.IN" />
+					<property name="jndi-context-factory" value="${mib.jms.contextFactory}" />
+					<property name="jndi-URL" value="${mib.jms.url}" />
+					<property name="connection-factory" value="${mib.jms.queue.connectionFactory}" />
+					<property name="unwrap" value="true" />
+				</action>
+			</actions>
+		</service>
+	
+		<!-- Listen on our IN queue and route to standard Reply queue -->
+		<service category="tg-ellipse-hr"
+			description="Service that is listening on the HR in queue" invmScope="GLOBAL"
+			name="SAVVEInboundDispatcher">
+			<property name="maxThreads" value="1" /> 
+  			<property name="inVMLockStep" value="true" /> 
+			<listeners>
+				<jms-listener busidref="TG.ELLIPSE-SAVVE.IN" is-gateway="true"
+					maxThreads="1" name="Inbound-Listener">
+					<property name="composer-class" value="com.mincom.mib.esb.JMSMessageComposer" />
+				</jms-listener>
+			</listeners>  
+	
+			<actions mep="OneWay">
+				<action class="org.jboss.soa.esb.actions.Notifier" name="BroadcastResults">
+					<property name="okMethod" value="notifyOK" />
+					<property name="exceptionMethod" value="notifyError" />
+					<property name="destinations">
+						<NotificationList type="ok">
+							<target class="NotifyQueues">
+								<queue connection-factory="XAConnectionFactory" jndi-URL="${mib.jms.url}"
+									jndi-context-factory="${mib.jms.contextFactory}" jndiName="${mib.jms.queue.tg.hr.outbound}" />
+							</target>
+						</NotificationList>
+						<NotificationList type="err">
+							<target class="NotifyQueues">
+								<queue connection-factory="XAConnectionFactory" jndi-URL="${mib.jms.url}"
+									jndi-context-factory="${mib.jms.contextFactory}" jndiName="${mib.jms.queue.tg.hr.outbound}" />
+							</target>
+						</NotificationList>
+					</property>
+				</action>
+				<action class="org.jboss.soa.esb.actions.routing.EchoRouter"
+					name="EchoFile" />
+				<!-- Store our message in the ESB Archive -->
+				<action class="com.mincom.mib.esb.action.ESBMessageStoreAction"
+					name="StoreMessage">
+					<property name="statusOnOK" value="OK" />
+					<property name="statusOnError" value="FAILED" />
+					<property name="deployment" value="tg-ellipse-hr.esb" />
+					<property name="replayTarget" value="tg-ellipse-hr:SAVVEInboundDispatcher" />
+				</action> 
+				<action class="com.mincom.mib.esb.action.ResponseHandler"
+					name="InitializeResponseMessage">
+					<property name="smooksConfig">
+						<exceptionMapping config="/transforms/common/OAGISResponseMapping.xml"
+							get-payload-location="ReplyMessage" resultType="STRING"
+							useResponseAsDefault="true" />
+						<replyMapping config="/transforms/common/OAGISDefaultResponseMapping.xml"
+							resultType="STRING" set-payload-location="ReplyMessage"
+							storeBeanResults="MessageHeader" />
+					</property>
+				</action>
+				<!-- Log the message to the log file -->
+				<action class="org.jboss.soa.esb.actions.LogAction" name="LogMessage">
+					<property name="logLevel" value="info" />
+					<property name="message"
+						value="Inbound message received from Savv-e to Ellipse channel, routing..." />
+				</action>
+				<!-- Capture the common data from the header for use later -->
+				<action class="org.jboss.soa.esb.smooks.SmooksAction" name="TrainingResults">
+					<property name="smooksConfig"
+						value="/transforms/common/OAGISUserAreaMapping.xml" />
+					<property name="set-payload-location" value="MessageHeader" />
+					<property name="resultType" value="JAVA" />
+				</action>
+				<!-- Setup the default operation context used by Ellipse -->
+				<action class="com.mincom.mib.ellipse.SetDefaultOperationContext"
+					name="SetOperationContext">
+					<property name="district" value="${ellipse.defaultDistrict}" />
+					<property name="position" value="${ellipse.defaultPosition}" />
+					<property name="numberOfInstances" value="50" />
+				</action> 
+				<!-- Start a conversation with Ellipse -->
+				<action class="com.mincom.mib.ellipse.StartConversationAction"
+					name="StartConversation">
+					<property name="serviceUrl" value="${ellipse.serviceUrl}" />
+					<property name="serviceUrl.1" value="${ellipse.serviceUrl.1:null}" />
+					<property name="serviceUrl.2" value="${ellipse.serviceUrl.2:null}" />
+					<property name="user" value="${ellipse.user}" />
+					<property name="password" value="${ellipse.password}" />
+				</action>
+				<action class="org.jboss.soa.esb.smooks.SmooksAction" name="ConvertXMLtoDTO">
+					<property name="smooksConfig"
+						value="/transforms/ellipse/inbound/TrainingResultsSyncMapping.xml" />
+					<property name="set-payload-location" value="RequestDTOs" />
+					<property name="resultType" value="JAVA" />
+				</action>
+				<action class="com.mincom.mib.ellipse.TransactionAction" 
+					name="StartTransaction" process="start" />
+				  
+				<action class="com.transgrid.mib.ellipse.hr.action.TrainingResultsAction"
+					name="EmployeeTrainingCourse" process="modify">
+					<property name="get-payload-location" value="RequestDTOs" />
+				</action>        
+				<action class="com.mincom.mib.ellipse.TransactionAction" 
+					name="CompleteTransaction" process="commit" />
+				
+				<action class="com.mincom.mib.esb.action.ResponseHandler"
+					name="SetResponseMessage">
+					<property name="smooksConfig">
+						<replyMapping config="/transforms/common/OAGISResponseMapping.xml"
+							get-payload-location="ReplyMessage" resultType="STRING"
+							useResponseAsDefault="true" />
+					</property>
+				</action>
+				<!-- End the Ellipse conversation -->
+				<action class="com.mincom.mib.ellipse.EndConversationAction"
+					name="EndConversation" />
+			</actions>
+		</service>
+		
+		<!-- This service to handle to call core adapter services for HR module -->
+		<service category="tg-ellipse-hr" description="HR inbound messages.."
+			invmScope="GLOBAL" invmTransacted="false" name="HRInboundService">
+			<property name="maxThreads" value="1" />
+			<property name="inVMLockStep" value="true" />
+			<listeners> 
+				<jms-listener busidref="TG.ELLIPSE-HR.IN" is-gateway="true"
+					maxThreads="1" name="HRInboundServiceListener">
+					<property name="composer-class" value="com.mincom.mib.esb.JMSMessageComposer" />
+				</jms-listener>
+			</listeners>
+			<actions mep="OneWay">
+				<action class="com.mincom.mib.esb.action.SetPropertyAction"
+					name="SetProperties">
+					<property name="properties">
+						<set name="ClientID">'HR-INBOUND'</set>
+					</property>
+				</action>
+				<!-- <action class="org.jboss.soa.esb.actions.SystemPrintln" name="Echo"> 
+					<property name="message" value="Result" /> <property name="printfull" value="true" 
+					/> </action> -->
+				<action class="org.jboss.soa.esb.actions.Notifier" name="SendResponseNotifier">
+					<property name="okMethod" value="notifyOK" />
+					<property name="exceptionMethod" value="notifyError" />
+					<property name="destinations">
+						<NotificationList type="${mib.reply.error:err}">
+							<target class="NotifyQueues">
+								<queue connection-factory="${mib.jms.queue.connectionFactory}"
+									jndi-URL="${mib.jms.url}" jndi-context-factory="${mib.jms.contextFactory}"
+									jndiName="${mib.jms.queue.name.error}" />
+							</target>
+						</NotificationList>
+						<NotificationList type="${mib.reply.ok:ok}">
+							<target class="NotifyQueues">
+								<queue connection-factory="${mib.jms.queue.connectionFactory}"
+									jndi-URL="${mib.jms.url}" jndi-context-factory="${mib.jms.contextFactory}"
+									jndiName="${mib.jms.queue.name.reply}" />
+							</target>
+						</NotificationList>
+					</property>
+				</action>
+				<action class="com.mincom.mib.esb.action.ESBMessageStoreAction"
+					name="StoreMessage">
+					<property name="statusOnOK" value="OK" />
+					<property name="statusOnError" value="FAILED" />
+					<property name="deployment" value="tg-ellipse-hr" />
+					<property name="replayTarget" value="tg-ellipse-hr:HRInboundService" />
+				</action>
+
+				<!-- Setup the default response -->
+				<action class="com.mincom.mib.esb.action.ResponseHandler"
+					name="InitializeResponseMessage">
+					<property name="smooksConfig">
+						<exceptionMapping config="/transforms/common/OAGISResponseMapping.xml"
+							get-payload-location="ReplyMessage" resultType="STRING"
+							useResponseAsDefault="true" />
+						<replyMapping config="/transforms/common/OAGISDefaultResponseMapping.xml"
+							resultType="STRING" set-payload-location="ReplyMessage"
+							storeBeanResults="MessageHeader" />
+					</property>
+				</action>
+				<action class="com.mincom.mib.esb.action.EMailHandler" name="SendEmailResponse">
+					<property name="smooksConfig">
+						<successMapping config="/transforms/common/StandardEMailMapping.xml"
+							resultType="STRING" />
+						<exceptionMapping config="/transforms/common/StandardEMailMapping.xml"
+							resultType="STRING" />
+					</property>
+					<property name="sendOnOk" value="${mib.email.send.success:false}" />
+					<property name="sendOnException" value="${mib.email.send.error:false}" />
+					<property name="useResponseAsDefault" value="true" />
+					<property name="host" value="${mib.email.host:mailhost}" />
+					<property name="port" value="${mib.email.port:25}" />
+					<property name="username" value="${mib.email.username}" />
+					<property name="password" value="${mib.email.password}" />
+					<property name="tls" value="${mib.email.tls:false}" />
+					<property name="ssl" value="${mib.email.ssl:false}" />
+
+					<property name="from" value="${mib.email.from:mib@mincom.com}" />
+					<property name="to" value="${mib.email.to}" />
+					<property name="subject"
+						value="A {ServiceName} message has been received and processed successfully" />
+
+					<property name="error.from" value="${mib.email.from:mib@mincom.com}" />
+					<property name="error.to" value="${mib.email.to}" />
+					<property name="error.subject"
+						value="An error has occured processing a {ServiceName} message" />
+				</action>
+				<!-- Log the message to the log file -->
+				<action class="org.jboss.soa.esb.actions.LogAction" name="LogMessage">
+					<property name="logLevel" value="info" />
+					<property name="message"
+						value="HR inbound channel message received to call core service, routing..." />
+				</action>
+				<!-- Capture the common data from the header for use later -->
+				<action class="org.jboss.soa.esb.smooks.SmooksAction" name="MapUserAreaToHeader">
+					<property name="smooksConfig"
+						value="/transforms/common/OAGISUserAreaMapping.xml" />
+					<property name="set-payload-location" value="MessageHeader" />
+					<property name="resultType" value="JAVA" />
+				</action>
+				<action class="com.mincom.mib.ellipse.SetDefaultOperationContext"
+					name="SetOperationContext">
+					<property name="district" value="${ellipse.defaultDistrict}" />
+					<property name="position" value="${ellipse.defaultPosition}" />
+					<property name="numberOfInstances" value="${ellipse.numberOfInstances:50}" />
+				</action>
+				<action class="com.mincom.mib.ellipse.StartConversationAction"
+					name="StartConversation">
+					<property name="serviceUrl" value="${ellipse.serviceUrl}" />
+					<property name="serviceUrl.1" value="${ellipse.serviceUrl.1:null}" />
+					<property name="serviceUrl.2" value="${ellipse.serviceUrl.2:null}" />
+					<property name="user" value="${ellipse.user}" />
+					<property name="password" value="${ellipse.password}" />
+				</action>
+
+				<action class="com.mincom.mib.esb.action.ContentBasedDetour"
+					name="EllipseServiceDetour" process="process">
+					<property name="cbrAlias" value="Xpath" />
+					<property name="ruleLanguage" />
+					<property name="detourTimeout" value="${ellipse.detour.timeout:180000}" />
+					<property name="destinations">
+						<route-to destination-name="GetCodeEntry"
+							expression="/*[local-name()='GetCodeEntry']" service-category="tg-ellipse-hr"
+							service-name="GetCodeEntry" />
+						<default-route-to service-category="tg-ellipse-hr"
+							service-name="RouteToMIBCommon" />
+					</property>
+				</action>
+
+				<action class="com.mincom.mib.esb.action.ResponseHandler"
+					name="SetResponseMessage">
+					<property name="smooksConfig">
+						<replyMapping config="/transforms/common/OAGISResponseMapping.xml"
+							get-payload-location="ReplyMessage" resultType="STRING"
+							useResponseAsDefault="true" />
+					</property>
+				</action>
+				<action class="com.mincom.mib.ellipse.EndConversationAction"
+					name="EndConversation" />
+			</actions>
+		</service>
+		
+		<!-- Table Code Entry -->
+		<service category="tg-ellipse-hr" description="get code entries"
+			invmScope="GLOBAL" invmTransacted="false" name="GetCodeEntry">
+			<property name="inVMLockStep" value="true" />
+			<actions mep="RequestResponse">
+				<action class="org.jboss.soa.esb.smooks.SmooksAction" name="MapMessageToDTOs">
+					<property name="smooksConfig"
+						value="/transforms/ellipse/CodeEntryGetMapping.xml" />
+					<property name="set-payload-location" value="RequestDTOs" />
+					<property name="resultType" value="JAVA" />
+				</action>
+				<action class="com.mincom.mib.ellipse.master.TableAction"
+					name="TableEntryGet" process="get">
+					<property name="get-payload-location" value="RequestDTOs" />
+				</action>
+				<action class="org.jboss.soa.esb.smooks.SmooksAction" name="MapDTOsToReply">
+					<property name="smooksConfig"
+						value="/transforms/ellipse/CodeEntryShowMapping.xml" />
+					<property name="get-payload-location" value="ReplyDTOs" />
+					<property name="set-payload-location" value="ReplyMessage" />
+					<property name="resultType" value="STRING" />
+				</action>
+			</actions> 
+		</service>
+		
+		<!-- Can be used as the default detour -->
+		<service category="tg-ellipse-hr"
+				description="Default for when system message cannot be routed"
+				invmScope="GLOBAL" invmTransacted="false" name="RouteToMIBCommon">
+			<property name="inVMLockStep" value="true"/>
+			<actions mep="RequestResponse">
+				<action class="org.jboss.soa.esb.actions.LogAction" name="LogMessage">
+					<property name="logLevel" value="info"/>
+					<property name="message" value="Message is being routed to MIB core channel from HR.."/>
+				</action>
+				<action class="com.mincom.mib.esb.action.JMSWireTap" name="RouteToMIB">
+					<property name="jndiName" value="queue/MIB.COMMON.GW"/>
+					<property name="jndi-context-factory" value="${mib.jms.contextFactory}"/>
+					<property name="jndi-URL" value="${mib.jms.url}"/>
+					<property name="connection-factory" value="${mib.jms.queue.connectionFactory}"/>
+					<property name="unwrap" value="true"/>
+				</action>
+			</actions>
+		</service>
+
+		<!-- Reply listener simply gets the messages from REPLY and ERROR and posts 
+			them to TG.ELLIPSE.HR.OUT. -->
+		<service category="tg-ellipse-hr"
+			description="Internal service that is listening on the reply queues and broadcasting to the outbound topics and queues"
+			invmScope="GLOBAL" name="ProcessInReplyListener">
+			<listeners>
+				<jms-listener busidref="INBOUND.REPLY" is-gateway="true"
+					maxThreads="1" name="Reply-Inbound-Listener">
+				</jms-listener>
+			</listeners>
+			<actions mep="OneWay">
+				<action class="org.jboss.soa.esb.actions.Notifier" name="InboundNotifier">
+					<property name="okMethod" value="notifyOK" />
+					<property name="exceptionMethod" value="notifyError" />
+					<property name="destinations">
+						<NotificationList type="ok">
+							<target class="NotifyQueues">
+								<queue connection-factory="${mib.jms.queue.connectionFactory}"
+									jndi-URL="${mib.jms.url}" jndi-context-factory="${mib.jms.contextFactory}"
+									jndiName="queue/TG.ELLIPSE-HR.OUT" />
+							</target>
+						</NotificationList>
+					</property>
+				</action>
+			</actions>
+		</service>
+	</services>
+</jbossesb>

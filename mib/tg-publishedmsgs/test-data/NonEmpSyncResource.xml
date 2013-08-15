@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SyncResource xmlns:oa="http://www.openapplications.org/oagis">
+	<oa:ApplicationArea>
+		<BODID>8b1cb61a-5b01-4cd3-ba8e-2493e5062425</BODID>
+		<oa:Sender>
+			<LogicalID>MySystem</LogicalID>
+			<TaskID>SyncResource</TaskID>
+			<ReferenceID>MyReference</ReferenceID>
+		</oa:Sender>
+		<oa:UserArea>
+			<ServiceContext>
+				<ServiceName>SyncResource</ServiceName>
+				<ServiceVersion>1.0</ServiceVersion>
+				<MessageType>Resource</MessageType>
+			</ServiceContext>
+			<AuthorizationContext>
+				<OrgID>${DefaultDistrict}</OrgID>
+			</AuthorizationContext>
+		</oa:UserArea>
+	</oa:ApplicationArea>
+	<oa:DataArea>
+		<oa:Sync>
+			<oa:ActionCriteria>
+				<oa:ActionExpression actionCode="Add"></oa:ActionExpression>
+			</oa:ActionCriteria>
+		</oa:Sync>
+		<Resource>
+				<ID>0000016748</ID>
+				<PersonType>E</PersonType>
+				<Type>A2.4</Type>
+				<EffectiveDate>20121021</EffectiveDate>
+				<TypeDescription>Operating Switchgear via SCADA</TypeDescription>
+				<CompetencyLevel>CU</CompetencyLevel>
+				<ExpiryDate>20121017</ExpiryDate>			
+			</Resource>
+	</oa:DataArea>
+</SyncResource>

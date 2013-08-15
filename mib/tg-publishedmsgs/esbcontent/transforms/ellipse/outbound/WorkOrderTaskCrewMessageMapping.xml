@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smooks-resource-list xmlns="http://www.milyn.org/xsd/smooks-1.1.xsd"
+	xmlns:csv="http://www.milyn.org/xsd/smooks/csv-1.2.xsd" xmlns:ftl="http://www.milyn.org/xsd/smooks/freemarker-1.1.xsd"
+	xmlns:jb="http://www.milyn.org/xsd/smooks/javabean-1.3.xsd">
+
+	<import file="classpath:/transforms/ellipse/CommonMapping.xml" />
+	
+	<resource-config selector="com.mincom.ellipse.edoi.ejb.msf623.MSF623Rec">
+		<resource>org.milyn.delivery.DomModelCreator</resource>
+	</resource-config>
+
+	<ftl:freemarker applyOnElement="com.mincom.ellipse.edoi.ejb.msf623.MSF623Rec">
+		<ftl:template><![CDATA[<?xml version="1.0" encoding="UTF-8"?><#escape x as x?xml>
+	    <GetMaintenanceOrder xmlns:oa="http://www.openapplications.org/oagis/9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<oa:ApplicationArea>				
+				<oa:Sender>
+					<oa:LogicalID>EllipseSystem</oa:LogicalID>
+					<oa:TaskID>ShowMaintenanceOrder</oa:TaskID>
+					<oa:ReferenceID>PublishMaintenanceOrderLine</oa:ReferenceID>
+				</oa:Sender>
+				<oa:CreationDateTime>${PTIME.nowDate?string("yyyy-MM-dd'T'HH:mm:ss")}</oa:CreationDateTime>
+				<oa:BODID>${MessageUUID!}</oa:BODID>
+				<oa:UserArea xmlns="http://www.ventyx.com/IP/1"
+		            xsi:schemaLocation="http://www.ventyx.com/IP/1 ${IPPath}/1_0_0/ApplicationAreaExtensions.xsd">
+					<ServiceContext>
+						<ServiceName>GetMaintenanceOrder</ServiceName>
+						<ServiceVersion>1.0</ServiceVersion>
+						<MessageType>MaintenanceOrder</MessageType>
+					</ServiceContext>
+					<AuthorizationContext>
+		            	<OrgID>${DefaultDistrict}</OrgID>
+		            	<Proxy>
+		            		<UserID>${UserID}</UserID>
+		            		<Role>${PositionID}</Role>		            		
+		            	</Proxy>		            	
+		            </AuthorizationContext>
+				</oa:UserArea>
+			</oa:ApplicationArea>
+			<oa:DataArea>
+				<MaintenanceOrder>
+					<MaintenanceOrderHeader>
+						<DocumentID>
+							<ID>${.vars["com.mincom.ellipse.edoi.ejb.msf623.MSF623Rec"].crewTaskRecs.key.workOrder}</ID>
+						</DocumentID>	
+						<Distribution>
+							<EnterpriseUnit>
+								<GLEntityID>${.vars["com.mincom.ellipse.edoi.ejb.msf623.MSF623Rec"].crewTaskRecs.key.dstrctCode}</GLEntityID>
+							</EnterpriseUnit>
+						</Distribution>
+						<UserArea>
+							<SearchMethod>E</SearchMethod>
+						</UserArea>
+					</MaintenanceOrderHeader>
+					<MaintenanceOrderLine>
+						<OperationID>
+								<ID>${.vars["com.mincom.ellipse.edoi.ejb.msf623.MSF623Rec"].crewTaskRecs.key.woTaskNo}</ID>
+						</OperationID>
+					</MaintenanceOrderLine>	
+				</MaintenanceOrder>
+			</oa:DataArea>
+		</GetMaintenanceOrder></#escape>
+	    ]]>
+		</ftl:template>
+	</ftl:freemarker>
+</smooks-resource-list>

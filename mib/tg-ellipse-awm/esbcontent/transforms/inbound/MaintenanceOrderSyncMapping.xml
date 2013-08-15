@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Smooks mapping for the SyncMaintenance message from TransGrid. Populates 
+	WorkOrderTaskServiceModifyRequestDTO with the needed information. -->
+<smooks-resource-list xmlns="http://www.milyn.org/xsd/smooks-1.1.xsd"
+	xmlns:jb="http://www.milyn.org/xsd/smooks/javabean-1.4.xsd">
+	<params>
+		<param name="stream.filter.type">DOM</param>
+		<param name="inputType">input.xml</param>
+	</params>
+
+	<!-- List of WorkOrderTaskServiceModifyRequestDTO -->
+	<jb:bean beanId="workOrderTasks" class="java.util.ArrayList"
+		createOnElement="DataArea" retain="true">
+		<jb:wiring beanIdRef="workOrderTask" />
+	</jb:bean>
+
+	<jb:bean beanId="common" class="java.util.HashMap"
+		createOnElement="MaintenanceOrderHeader/Distribution/EnterpriseUnit"
+		retain="true">
+		<!-- District Code -->
+		<jb:value data="GLEntityID" property="GLEntityID" default="null" />
+	</jb:bean>
+
+	<!-- Work order beans used to set the work order on the task -->
+	<jb:bean beanId="taskWorkOrderID"
+		class="com.mincom.enterpriseservice.ellipse.workordertask.WorkOrderDTO"
+		createOnElement="DataArea/MaintenanceOrder/MaintenanceOrderHeader"
+		retain="true">
+		<!-- Prefix of the work order ID -->
+		<jb:value data="MaintenanceOrderHeader/DocumentID/ID"
+			setterMethod="setPrefix" decoder="com.mincom.mib.smooks.decoders.ExpressionDecoder">
+			<jb:decodeParam name="expression">value.length() > 2 ? value.substring(0,2):value</jb:decodeParam>
+		</jb:value>
+		<!-- Number of the work order ID -->
+		<jb:value data="MaintenanceOrderHeader/DocumentID/ID"
+			setterMethod="setNo" decoder="com.mincom.mib.smooks.decoders.ExpressionDecoder">
+			<jb:decodeParam name="expression">value.length() > 2 ? value.substring(2):null</jb:decodeParam>
+		</jb:value>
+	</jb:bean>
+
+	<!-- Work Order Task mapping -->
+	<jb:bean beanId="workOrderTask"
+		class="com.mincom.enterpriseservice.ellipse.workordertask.WorkOrderTaskServiceModifyRequestDTO"
+		createOnElement="DataArea/MaintenanceOrder/MaintenanceOrderLine"
+		retain="true">
+		<!-- Work Order Task ID Number -->
+		<jb:value data="MaintenanceOrderLine/OperationID/ID"
+			setterMethod="setWOTaskNo" decoder="com.mincom.mib.smooks.decoders.StringFormatDecoder">
+			<jb:decodeParam name="type">LEFT_NUMERIC</jb:decodeParam>
+			<jb:decodeParam name="length">3</jb:decodeParam>
+			<jb:decodeParam name="format">0</jb:decodeParam>
+		</jb:value>
+		<!-- District Code -->
+		<jb:expression property="districtCode">common.GLEntityID</jb:expression>
+		<!-- Planned finish date -->
+		<jb:value
+			data="MaintenanceOrderLine/UserArea/PlannedTimePeriod/EndDateTime"
+			setterMethod="setPlanFinDate" decoder="com.mincom.mib.smooks.decoders.DateTimeDecoder">
+			<jb:decodeParam name="toFormat">yyyyMMdd</jb:decodeParam>
+			<jb:decodeParam name="toType">string</jb:decodeParam>
+		</jb:value>
+		<!-- Planned finish time -->
+		<jb:value
+			data="MaintenanceOrderLine/UserArea/PlannedTimePeriod/EndDateTime"
+			setterMethod="setPlanFinTime" decoder="com.mincom.mib.smooks.decoders.DateTimeDecoder">
+			<jb:decodeParam name="toFormat">HHmmss</jb:decodeParam>
+			<jb:decodeParam name="toType">string</jb:decodeParam>
+		</jb:value>
+		<!-- Planned start date -->
+		<jb:value
+			data="MaintenanceOrderLine/UserArea/PlannedTimePeriod/StartDateTime"
+			setterMethod="setPlanStrDate" decoder="com.mincom.mib.smooks.decoders.DateTimeDecoder">
+			<jb:decodeParam name="toFormat">yyyyMMdd</jb:decodeParam>
+			<jb:decodeParam name="toType">string</jb:decodeParam>
+		</jb:value>
+		<!-- Planned start time -->
+		<jb:value
+			data="MaintenanceOrderLine/UserArea/PlannedTimePeriod/StartDateTime"
+			setterMethod="setPlanStrTime" decoder="com.mincom.mib.smooks.decoders.DateTimeDecoder">
+			<jb:decodeParam name="toFormat">HHmmss</jb:decodeParam>
+			<jb:decodeParam name="toType">string</jb:decodeParam>
+		</jb:value>
+		<!-- Safety instructions -->
+		<jb:value data="MaintenanceOrderLine/Safety/Hazard/UserArea/Instruction"
+			setterMethod="setSafetyInstr" />
+			
+		<jb:wiring beanIdRef="taskWorkOrderID" setterMethod="setWorkOrder" />
+	</jb:bean>
+</smooks-resource-list>

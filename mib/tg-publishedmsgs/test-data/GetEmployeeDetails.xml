@@ -1,0 +1,31 @@
+<GetEmployeeDetails xmlns:oa="http://www.openapplications.org/oagis" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.openapplications.org/oagis file:///d:/devtools/OAGI-BPI-OAGIS-9_4_1-Full-GA/OAGi-BPI-Platform/org_openapplications_oagis/9_4_1/OAGIS.xsd">
+	<oa:ApplicationArea>
+		<BODID>GetEmployeeDetails</BODID>
+		<oa:Sender>
+			<LogicalID>FromSystem</LogicalID>
+			<TaskID></TaskID>
+			<ReferenceID>RequestID</ReferenceID>
+			<AuthorizationID></AuthorizationID>
+		</oa:Sender>
+		<oa:UserArea>
+			<ServiceContext>
+				<ServiceName>GetEmployeeDetails</ServiceName>
+				<ServiceVersion>1.0</ServiceVersion>
+				<MessageType>Employee</MessageType>
+			</ServiceContext>
+			<AuthorizationContext>
+			</AuthorizationContext>
+		</oa:UserArea>
+	</oa:ApplicationArea>
+	<oa:DataArea>
+		<oa:Get>
+		</oa:Get>
+		<Employee>
+			<ID>85771</ID>
+			<FamilyName></FamilyName>
+			<GivenName></GivenName>
+			<JobTitle></JobTitle>
+		</Employee>
+	</oa:DataArea>
+</GetEmployeeDetails>

@@ -1,0 +1,52 @@
+<com.mincom.ellipse.edoi.ejb.msf770.MSF770Rec>
+  <administrator>0000086550</administrator>
+  <administratorType>E</administratorType>
+  <assMethType>1   </assMethType>
+  <certificateType>    </certificateType>
+  <contactDetlx1>                                        </contactDetlx1>
+  <contactDetlx2>                                        </contactDetlx2>
+  <contactDetlx3>                                        </contactDetlx3>
+  <courseDescription>LIVE LINE RESCUE                                                                                    </courseDescription>
+  <courseTitle>LIVE LINE RESCUE              </courseTitle>
+  <courseType>1   </courseType>
+  <creationDate>20120723</creationDate>
+  <creationTime>120924</creationTime>
+  <creationUser>0000010163</creationUser>
+  <deliveryMethod>11  </deliveryMethod>
+  <disabledInd>Y</disabledInd>
+  <dstrctCode>    </dstrctCode>
+  <durValue>999.00</durValue>
+  <evalValue>000</evalValue>
+  <extCostPerHead>0.00</extCostPerHead>
+  <extNomAllowInd>Y</extNomAllowInd>
+  <extProvEmail>                                                                                                                                                                                                                                                                                                                                </extProvEmail>
+  <extProvId>      </extProvId>
+  <extProvInd>N</extProvInd>
+  <labRate>0.0000</labRate>
+  <lastModData>201210020932190000016748</lastModData>
+  <lastReviewedDate>20120719</lastReviewedDate>
+  <nominalHours>999.00</nominalHours>
+  <primaryKey>
+    <courseId>10        </courseId>
+    <majRevRvsd>998</majRevRvsd>
+  </primaryKey>
+  <refData>          </refData>
+  <refValue>000</refValue>
+  <repCodex1>    </repCodex1>
+  <repCodex2>    </repCodex2>
+  <repCodex3>    </repCodex3>
+  <repCodex4>0001</repCodex4>
+  <requalInd>M</requalInd>
+  <requalUnits>012</requalUnits>
+  <revReasonCode>    </revReasonCode>
+  <revRequalInd>N</revRequalInd>
+  <reviewDate>00000000</reviewDate>
+  <reviewerId>          </reviewerId>
+  <revisedBy>          </revisedBy>
+  <revisedDate>00000000</revisedDate>
+  <selfServeInd>Y</selfServeInd>
+  <tgaInd>N</tgaInd>
+  <totExtCost>0.00</totExtCost>
+  <totalCost>0.00</totalCost>
+  <workorder>        </workorder>
+</com.mincom.ellipse.edoi.ejb.msf770.MSF770Rec>
