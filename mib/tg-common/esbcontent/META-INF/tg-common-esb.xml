@@ -57,7 +57,7 @@
 					<property name="logLevel" value="info" />
 					<property name="logBody" value="true" />
 					<property name="message"
-						value="Published message received on VentyxSubscriberListener...." />
+						value="Published message received on VentyxSubscriberListener.." />
 				</action>
 			</actions>
 		</service>		
