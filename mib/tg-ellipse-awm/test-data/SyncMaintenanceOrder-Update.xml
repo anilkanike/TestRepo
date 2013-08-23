@@ -1,0 +1,69 @@
+<SyncMaintenanceOrder releaseID="9.5.1"
+	xmlns="http://www.openapplications.org/oagis/9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:oa="http://www.openapplications.org/oagis/9"
+	xsi:schemaLocation="http://www.openapplications.org/oagis/9 ../../OAGi-BPI-Platform/org_openapplications_oagis/9_5_1/Developer/BODs/SyncMaintenanceOrder.xsd">
+	<oa:ApplicationArea>
+		<oa:Sender>
+			<oa:LogicalID>VIB</oa:LogicalID>
+			<oa:TaskID>SyncMaintenanceOrder-AnilTest</oa:TaskID>
+			<oa:ReferenceID>SyncMaintenanceOrder</oa:ReferenceID>
+		</oa:Sender>
+		<oa:CreationDateTime>2013-02-04T09:00:00</oa:CreationDateTime>
+		<oa:BODID>Work Order and Task Update Test inc Must Start</oa:BODID>
+		<oa:UserArea xmlns:ip="http://www.ventyx.com/IP/1"
+			xsi:schemaLocation="http://www.ventyx.com/IP/1 ../IP/1_0_0/ApplicationAreaExtensions.xsd">
+			<ip:ServiceContext>
+				<ip:ServiceName>SyncMaintenanceOrder</ip:ServiceName>
+				<ip:ServiceVersion>1.0</ip:ServiceVersion>
+				<ip:MessageType>MaintenanceOrder</ip:MessageType>
+				<ip:CorrelationID>CorrelationID</ip:CorrelationID>
+				<ip:TransactionID>TransactionID</ip:TransactionID>
+				<ip:DocumentName>SyncMaintenanceOrder</ip:DocumentName>
+			</ip:ServiceContext>
+			<ip:AuthorizationContext>
+				<ip:OrgID>GRID</ip:OrgID>
+				<ip:Role></ip:Role>
+				<ip:Proxy>
+					<ip:UserID>S10201</ip:UserID>
+					<ip:OrgID>GRID</ip:OrgID>
+					<ip:Role>E8 AWM IF</ip:Role>
+				</ip:Proxy>
+			</ip:AuthorizationContext>
+		</oa:UserArea>
+	</oa:ApplicationArea>
+	<DataArea>
+		<oa:Sync></oa:Sync>
+		<oa:MaintenanceOrder>
+			<oa:MaintenanceOrderHeader>
+				<oa:DocumentID>
+					<oa:ID>00D25080</oa:ID>
+				</oa:DocumentID>
+				<Distribution>
+					<EnterpriseUnit>
+						<GLEntityID>GRID</GLEntityID>
+					</EnterpriseUnit>
+				</Distribution>
+			</oa:MaintenanceOrderHeader>
+			<oa:MaintenanceOrderLine>
+				<oa:OperationID>
+					<oa:ID>001</oa:ID>
+				</oa:OperationID>
+				<oa:Safety>
+					<oa:Hazard>
+						<oa:UserArea xmlns="http://www.ventyx.com/IP/Safety/1"
+							xsi:schemaLocation="http://www.ventyx.com/IP/Safety/1 ../IP/1_0_0/Nouns/SafetyUserArea.xsd">
+							<Instruction>CO</Instruction>
+						</oa:UserArea>
+					</oa:Hazard>
+				</oa:Safety>
+				<oa:UserArea xmlns="http://www.ventyx.com/IP/MaintenanceOrderLine/1"
+					xsi:schemaLocation="http://www.ventyx.com/IP/MaintenanceOrderLine/1 ../IP/1_0_0/Nouns/MaintenanceOrderLineUserArea.xsd">
+					 <PlannedTimePeriod>
+						<StartDateTime>2013-02-25T12:40:00</StartDateTime>
+						<EndDateTime>2013-03-11T11:40:00</EndDateTime>
+					</PlannedTimePeriod>
+				</oa:UserArea>
+			</oa:MaintenanceOrderLine>
+		</oa:MaintenanceOrder>
+	</DataArea>	
+</SyncMaintenanceOrder>

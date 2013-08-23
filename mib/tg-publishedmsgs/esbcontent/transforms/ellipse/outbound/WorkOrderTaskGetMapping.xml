@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smooks-resource-list xmlns="http://www.milyn.org/xsd/smooks-1.1.xsd"
+	xmlns:jb="http://www.milyn.org/xsd/smooks/javabean-1.4.xsd">
+	<params>
+		<param name="stream.filter.type">DOM</param>
+		<param name="default.serialization.on">true</param>
+	</params>
+	
+	<!-- Work Order Task Element -->
+	<jb:bean beanId="workOrderTaskRequest" class="com.transgrid.mib.ellipse.theos.domain.WorkOrderTaskWrapperDTO"
+		createOnElement="DataArea/MaintenanceOrder" retain="true">
+		<jb:value data="MaintenanceOrderHeader/Distribution/EnterpriseUnit/GLEntityID" property="districtCode" default="null"></jb:value>
+		<jb:value data="MaintenanceOrderLine/OperationID/ID" property="workOrderTask" default="null"></jb:value>
+		<jb:value data="MaintenanceOrderHeader/DocumentID/ID" property="workOrder" default="null"></jb:value> 
+	</jb:bean>	
+</smooks-resource-list>

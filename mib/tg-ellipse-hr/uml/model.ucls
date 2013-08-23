@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.1.2" icons="true" automaticImage="GIF" always-add-relationships="true" generalizations="true" 
+  realizations="true" associations="true" dependencies="true" nesting-relationships="true">  
+  <class id="1" language="java" name="com.transgrid.mib.ellipse.hr.action.EmployeeAction" project="tg-ellipse-hr" 
+    file="/tg-ellipse-hr/src/com/transgrid/mib/ellipse/hr/action/EmployeeAction.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position x="294" y="-302" width="191" height="197"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="2" language="java" name="com.transgrid.mib.ellipse.hr.action.NonEmployeeAction" project="tg-ellipse-hr" 
+    file="/tg-ellipse-hr/src/com/transgrid/mib/ellipse/hr/action/NonEmployeeAction.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position x="548" y="-142" width="185" height="167"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="3" language="java" name="com.transgrid.mib.ellipse.hr.action.ResourceAction" project="tg-ellipse-hr" 
+    file="/tg-ellipse-hr/src/com/transgrid/mib/ellipse/hr/action/ResourceAction.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position x="786" y="-130" width="183" height="174"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="4" language="java" name="com.transgrid.mib.ellipse.hr.domain.EllipseEmployee" project="tg-ellipse-hr" 
+    file="/tg-ellipse-hr/src/com/transgrid/mib/ellipse/hr/domain/EllipseEmployee.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position x="44" y="-318" width="161" height="153"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="5" language="java" name="com.transgrid.mib.ellipse.hr.action.TrainingCourseAction" project="tg-ellipse-hr" 
+    file="/tg-ellipse-hr/src/com/transgrid/mib/ellipse/hr/action/TrainingCourseAction.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position x="41" y="374" width="187" height="187"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="6" language="java" name="com.transgrid.mib.ellipse.hr.action.TrainingResultsAction" project="tg-ellipse-hr" 
+    file="/tg-ellipse-hr/src/com/transgrid/mib/ellipse/hr/action/TrainingResultsAction.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position x="292" y="15" width="189" height="188"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="7" language="java" name="com.transgrid.mib.ellipse.hr.domain.EllipseEmployeeLeave" project="tg-ellipse-hr" 
+    file="/tg-ellipse-hr/src/com/transgrid/mib/ellipse/hr/domain/EllipseEmployeeLeave.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position x="43" y="6" width="162" height="161"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="8" language="java" name="com.transgrid.mib.ellipse.hr.domain.EllipseNonEmployee" project="tg-ellipse-hr" 
+    file="/tg-ellipse-hr/src/com/transgrid/mib/ellipse/hr/domain/EllipseNonEmployee.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position x="556" y="-319" width="166" height="144"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="9" language="java" name="com.transgrid.mib.ellipse.hr.domain.EllipseResource" project="tg-ellipse-hr" 
+    file="/tg-ellipse-hr/src/com/transgrid/mib/ellipse/hr/domain/EllipseResource.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position x="789" y="-329" width="168" height="168"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="10" language="java" name="com.transgrid.mib.ellipse.hr.domain.EllipseTrainingCourse" 
+    project="tg-ellipse-hr" file="/tg-ellipse-hr/src/com/transgrid/mib/ellipse/hr/domain/EllipseTrainingCourse.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position x="320" y="378" width="162" height="179"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="11" language="java" name="com.transgrid.mib.ellipse.hr.domain.EllipseTrainingResults" 
+    project="tg-ellipse-hr" file="/tg-ellipse-hr/src/com/transgrid/mib/ellipse/hr/domain/EllipseTrainingResults.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position x="43" y="181" width="162" height="174"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="12" language="java" name="com.transgrid.mib.ellipse.hr.domain.TrainerType" project="tg-ellipse-hr" 
+    file="/tg-ellipse-hr/src/com/transgrid/mib/ellipse/hr/domain/TrainerType.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position x="572" y="384" width="164" height="169"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="13" language="java" name="com.transgrid.mib.ellipse.hr.common.EllipseTopicClient" project="tg-ellipse-hr" 
+    file="/tg-ellipse-hr/src/com/transgrid/mib/ellipse/hr/common/EllipseTopicClient.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position x="43" y="-157" width="164" height="149"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="14" language="java" name="com.transgrid.mib.ellipse.hr.common.CommonUtil" project="tg-ellipse-hr" 
+    file="/tg-ellipse-hr/src/com/transgrid/mib/ellipse/hr/common/CommonUtil.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position x="542" y="91" width="199" height="206"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <interface id="15" language="java" name="com.transgrid.mib.ellipse.hr.common.AATConstants" project="tg-ellipse-hr" 
+    file="/tg-ellipse-hr/src/com/transgrid/mib/ellipse/hr/common/AATConstants.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position x="792" y="124" width="169" height="142"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </interface>  
+  <dependency id="16">    
+    <end type="SOURCE" refId="14"/>    
+    <end type="TARGET" refId="15"/>  
+  </dependency>  
+  <dependency id="17">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="14"/>  
+  </dependency>  
+  <dependency id="18">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="11"/>  
+  </dependency>  
+  <dependency id="19">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="7"/>  
+  </dependency>  
+  <dependency id="20">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="9"/>  
+  </dependency>  
+  <dependency id="21">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="14"/>  
+  </dependency>  
+  <dependency id="22">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="4"/>  
+  </dependency>  
+  <association id="23">    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="24" name="trCourse"/>      
+      <multiplicity id="25" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="10" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="26">    
+    <end type="SOURCE" refId="10" navigable="false">      
+      <attribute id="27" name="trainer"/>      
+      <multiplicity id="28" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="12" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="29">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="15"/>  
+  </dependency>  
+  <dependency id="30">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="15"/>  
+  </dependency>  
+  <dependency id="31">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="13"/>  
+  </dependency>  
+  <dependency id="32">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="8"/>  
+  </dependency>  
+  <dependency id="33">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="14"/>  
+  </dependency>  
+  <association id="34">    
+    <end type="SOURCE" refId="10" navigable="false">      
+      <attribute id="35" name="assessor"/>      
+      <multiplicity id="36" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="12" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="37">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="14"/>  
+  </dependency>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    accessors="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true"/>    
+    <operations public="true" package="true" protected="true" private="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

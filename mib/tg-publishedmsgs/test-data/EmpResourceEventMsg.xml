@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<com.mincom.ellipse.edoi.ejb.msf765.MSF765Rec>
+  <authBy/>
+  <authByInd/>
+  <authDate>00000000</authDate>
+  <companyCost>0.00</companyCost>
+  <comptcyLevel>BD</comptcyLevel>
+  <courseId/>
+  <currentHrs>0.00</currentHrs>
+  <evalPoints>0</evalPoints>
+  <gainedDate>20121001</gainedDate>
+  <historyStatus/>
+  <institute/>
+  <lastModDate>20121004</lastModDate>
+  <lastModTime>102609</lastModTime>
+  <lastModUser>0000016748</lastModUser>
+  <lastRevDate>00000000</lastRevDate>
+  <licenceNo1/>
+  <licenceNo2/>
+  <primaryKey>
+    <empResInd>C</empResInd>
+    <employeeId>0000016748</employeeId>
+    <inverseDate>79878987</inverseDate>
+    <resourceTy>QA2.1</resourceTy>
+  </primaryKey>
+  <reqmtType/>
+  <resUserFldx1/>
+  <resUserFldx2/>
+  <resUserFldx3/>
+  <resUserFldx4/>
+  <revExpDate>20121030</revExpDate>
+  <reviewBy/>
+  <reviewByInd/>
+  <reviewReason/>
+  <sessionNo/>
+</com.mincom.ellipse.edoi.ejb.msf765.MSF765Rec>
