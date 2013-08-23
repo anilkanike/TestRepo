@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- This is required as a work around for issue
-https://issues.jboss.org/browse/SOA-1606
- -->
-<server></server>
