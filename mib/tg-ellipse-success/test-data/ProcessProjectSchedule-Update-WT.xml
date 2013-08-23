@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ProcessProjectSchedule xmlns:oa="http://www.openapplications.org/oagis/9"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<oa:ApplicationArea>
+		<BODID>Test-20130510</BODID>
+		<oa:Sender>
+			<LogicalID>TestFromConsole</LogicalID>
+			<TaskID>AnilTest-ProcessProjectSchedule</TaskID>
+			<ReferenceID>AnilTestRequestID</ReferenceID>
+		</oa:Sender>
+		<oa:UserArea>
+			<ServiceContext>
+				<ServiceName>Anil-Testing</ServiceName>
+				<ServiceVersion>1.0</ServiceVersion>
+				<MessageType>ProjectSchedule</MessageType>
+				<CorrelationID>CID-Test-20130510</CorrelationID>
+				<TransactionID>TID-Test-20130510</TransactionID>
+				<DocumentName>Test</DocumentName>
+			</ServiceContext>
+			<AuthorizationContext>
+				<OrgID>GRID</OrgID>
+				<Proxy>
+					<UserID>C16950</UserID>
+					<Role>DUMMY12</Role>
+				</Proxy>
+			</AuthorizationContext>
+		</oa:UserArea>
+	</oa:ApplicationArea>
+	<DataArea>
+		<Process />
+		<ProjectSchedule>
+			<DocumentID>
+				<ID>000000001004</ID>
+			</DocumentID>
+			<ProjectScheduleActivity type="WT">
+				<DocumentID>
+					<ID>GRID00300003002</ID>
+				</DocumentID>
+				<Description sequence="1">je item. 4</Description>
+				<DocumentReference type="jobestimate">
+					<DocumentID>
+						<ID>000000001303</ID>
+						<RevisionID>001</RevisionID>
+					</DocumentID>
+					<LineNumber>000004</LineNumber>
+					<Status>
+						<Code>A</Code>
+					</Status>
+					<EstimateRoot type="">000000000</EstimateRoot>
+				</DocumentReference>
+				<Distribution>
+					<EnterpriseUnit>
+						<GLEntityID>GRID</GLEntityID>
+					</EnterpriseUnit>
+				</Distribution>
+				<PlannedTimePeriod>
+					<StartDateTime>2013-02-01T00:00:00</StartDateTime>
+					<EndDateTime>2013-04-10T00:00:00</EndDateTime>
+				</PlannedTimePeriod>
+				<ActualTimePeriod>
+					<UserArea>
+						<PercentageComplete>25</PercentageComplete>
+					</UserArea>
+				</ActualTimePeriod>
+			</ProjectScheduleActivity>
+		</ProjectSchedule>
+	</DataArea>
+</ProcessProjectSchedule>

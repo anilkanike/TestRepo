@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smooks-resource-list xmlns="http://www.milyn.org/xsd/smooks-1.1.xsd" 
+	xmlns:csv="http://www.milyn.org/xsd/smooks/csv-1.2.xsd"
+	xmlns:ftl="http://www.milyn.org/xsd/smooks/freemarker-1.1.xsd" 
+	xmlns:jb="http://www.milyn.org/xsd/smooks/javabean-1.3.xsd">
+	
+	<import file="classpath:/transforms/ellipse/CommonMapping.xml" />
+	
+	<!-- generate the template using a Freemarker template when the codes -->
+	<ftl:freemarker applyOnElement="$document" >
+		<ftl:template><![CDATA[
+		<#escape x as x?xml>
+		<ShowPersonnelLeave releaseID="TG.1.0.0" xsi:schemaLocation="http://www.ventyx.com/IP/1 ../IP/1_0_0/BODs/ShowPersonnelLeave.xsd" xmlns="http://www.ventyx.com/IP/1" xmlns:oa="http://www.openapplications.org/oagis/9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<oa:ApplicationArea>
+		      	  <oa:Sender>
+		      	  	<#-- Logical ID of the sending system -->
+		            <oa:LogicalID>${SystemID!}</oa:LogicalID>
+		            <#-- Task ID relating to what is being done -->
+		            <oa:TaskID>ShowPersonnelLeave</oa:TaskID>
+		            <#-- Optional Reference ID for this request -->
+		            <oa:ReferenceID></oa:ReferenceID>
+		            <#-- Optional authorization ID -->
+		            <oa:AuthorizationID></oa:AuthorizationID>
+		          </oa:Sender>
+		          <oa:Receiver>
+		          	 <#-- Logical ID of the receiving system -->
+		             <oa:LogicalID><#if MessageHeader??>${MessageHeader.ServiceContext['FromSystemID']}</#if></oa:LogicalID>
+		          </oa:Receiver>
+		          <#-- Creation date and time of the message -->
+		          <oa:CreationDateTime>${PTIME.nowDate?string("yyyy-MM-dd'T'HH:mm:ss")}</oa:CreationDateTime>
+		          <#-- Globally Unique Identifier (GUID) that will make each Business Object Document instance uniquely identifiable -->
+		          <oa:BODID>${MessageUUID!}</oa:BODID>      
+				  <oa:UserArea xmlns="http://www.ventyx.com/IP/1">
+		            <ServiceContext>
+		                <#--Name of the service -->
+		                <ServiceName>ShowPersonnelLeave</ServiceName>
+		                <#-- Service version -->
+		                <ServiceVersion>1.0</ServiceVersion>
+		                <#-- Message Type or OAGIS Noun-->
+		                <MessageType>PersonnelLeave</MessageType>
+		            </ServiceContext>
+		            <AuthorizationContext>
+		            </AuthorizationContext>
+		        </oa:UserArea>
+			</oa:ApplicationArea>
+			<DataArea>
+				<oa:Show/>
+				<#if personnelLeaveResults??>
+				<PersonnelLeave>
+					<EmployeeID>${personnelLeaveResults.empId!}</EmployeeID>
+					<LeaveType>${personnelLeaveResults.leaveType!}</LeaveType>
+					<LeaveReason>${personnelLeaveResults.leaveReason!}</LeaveReason>
+					<LeaveApprovalStatus>${personnelLeaveResults.leaveApprovalStatus!}</LeaveApprovalStatus>
+					<LeaveStartDateTime>${personnelLeaveResults.leaveStartDate!}T${personnelLeaveResults.leaveStartTime!}</LeaveStartDateTime>
+					<LeaveEndDateTime>${personnelLeaveResults.leaveEndDate!}T${personnelLeaveResults.leaveEndTime!}</LeaveEndDateTime>
+					<RequestCreatedDateTime>${personnelLeaveResults.reqCreatedDate!}T${personnelLeaveResults.reqCreatedTime!}</RequestCreatedDateTime>
+					<RequestCreatedBy>${personnelLeaveResults.reqCreatedBy!}</RequestCreatedBy>
+					<RequestApprovedDateTime>${personnelLeaveResults.reqApprovedDate!}T${personnelLeaveResults.reqApprovedTime!}</RequestApprovedDateTime>
+					<RequestApprovedBy>${personnelLeaveResults.reqApprovedBy!}</RequestApprovedBy>			
+				</PersonnelLeave>
+				</#if>
+			</DataArea>
+		</ShowPersonnelLeave>
+		</#escape>
+		]]></ftl:template>
+	</ftl:freemarker>
+</smooks-resource-list>

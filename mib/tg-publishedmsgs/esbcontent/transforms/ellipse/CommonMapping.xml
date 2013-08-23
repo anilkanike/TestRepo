@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smooks-resource-list xmlns="http://www.milyn.org/xsd/smooks-1.1.xsd"
+	xmlns:jb="http://www.milyn.org/xsd/smooks/javabean-1.3.xsd">
+
+	<params>
+		<param name="stream.filter.type">SAX</param>
+		<param name="inputType">input.xml</param>
+		<param name="default.serialization.on">true</param>
+	</params>
+
+	<!-- Create a UUID that we can use in our freemarker template -->
+	<jb:bean beanId="MessageUUID" class="java.util.UUID" factory="java.util.UUID#randomUUID"
+		createOnElement="#document" />
+	<jb:bean beanId="RequestUUID" class="java.util.UUID" factory="java.util.UUID#randomUUID"
+		createOnElement="#document" />
+	<jb:bean beanId="DefaultDistrict" class="java.lang.String"
+		createOnElement="#document" factory="mvel:System.getProperty('ellipse.defaultDistrict')">
+	</jb:bean>
+	<jb:bean beanId="SystemID" class="java.lang.String"
+		factory="mvel:System.getProperty('mib.system.id','Ellipse')"
+		createOnElement="#document" />
+	<jb:bean beanId="IPPath" class="java.lang.String"
+		factory="mvel:System.getProperty('mib.schema.ipPath','../IP')"
+		createOnElement="#document" />	
+	<jb:bean beanId="UserID" class="java.lang.String"
+		factory="mvel:System.getProperty('publish.ellipse.proxyUser')"
+		createOnElement="#document" />
+	<jb:bean beanId="PositionID" class="java.lang.String"
+		factory="mvel:System.getProperty('publish.ellipse.proxyPosition')"
+		createOnElement="#document" />
+	<jb:bean beanId="ProxyDistrict" class="java.lang.String"
+		factory="mvel:System.getProperty('publish.ellipse.proxyDistrict')"
+		createOnElement="#document" />
+</smooks-resource-list>
