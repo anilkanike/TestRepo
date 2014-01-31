@@ -2,6 +2,6 @@ Mincom-Customer repository for TransGrid.
 
 This folder holds customs VIP (Ventyx Integration Bus) components...
 
-This is test 5 with new branch..
+This is test 6 with new branch..
 
 
